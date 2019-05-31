@@ -3,7 +3,7 @@ import socketIo from 'socket.io';
 const mongo = mongodb.MongoClient;
 const client = socketIo.listen(4000).sockets;
 
-mongo.connect('mongodb://127.0.0.1:27017/mongochat', (err, db) => {
+mongo.connect('mongodb://localhost/mongochat', (err, db) => {
   if(err) {
     throw err;
   };

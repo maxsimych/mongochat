@@ -16,7 +16,7 @@
     "babel-preset-env": "^1.7.0"
   },
   "dependencies": {
-    "mongodb": "^3.2.6",
+    "mongodb": "^2.2.33",
     "socket.io": "^2.2.0"
   }
 }
