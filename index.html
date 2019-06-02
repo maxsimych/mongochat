@@ -24,9 +24,7 @@
         <input type="text" id="username" class="form-control" placeholder="Enter name">
         <br>
         <div class="card">
-          <div id="messages" class="card-block">
-
-          </div>
+          <div id="messages" class="card-block"></div>
         </div>
         <br>
         <textarea id="textarea" class="form-control"></textarea>
@@ -50,7 +48,7 @@
         };
       };
       const socket = io.connect('http://localhost:4000');
-      if (socket !== undefined) {
+      if (socket) {
         console.log('Connected to socket!');
         socket.on('output', data => {
           data.map((curVal) => {
