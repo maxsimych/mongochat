@@ -10,7 +10,8 @@
     crossorigin="anonymous"
   >
   <style>
-    #messages {height: 300px;}
+    #messages {height: 300px;
+      overflow: auto}
   </style>
   <title>MongoChat</title>
 </head>
@@ -40,9 +41,9 @@
   </script>
   <script>
     $(() => {
-      const statusDefault = $('#status').text;
+      const statusDefault = $('#status').text();
       const setStatus = (s) => {
-        $('status').text = s;
+        $('#status').text(s);
         if (s !== statusDefault) {
           const delay = setTimeout(() => {
             setStatus(statusDefault)}, 4000);
@@ -52,11 +53,31 @@
       if (socket !== undefined) {
         console.log('Connected to socket!');
         socket.on('output', data => {
-          if(data.length) {
-            data.map((curVal) => {
-              $('#messages').append(`<div class="chat-message">${curVal.name}: ${curVal.text}</div>`);
-            })
+          data.map((curVal) => {
+            $('#messages').append(`<div class="chat-message">${curVal.name}: ${curVal.message}</div>`);
+          });
+        });
+        socket.on('status', (data) => {
+          setStatus(typeof data === 'object' ? data.message : data);
+          if(data.clear) {
+            $('#textarea').val('');
+          };
+        });
+        $('#textarea').on('keydown', (ev) => {
+          if (ev.which === 13 && !ev.shiftKey) {
+            socket.emit('input', {
+              name: $('#username').val(),
+              message: $('#textarea').val()
+            });
+            ev.preventDefault();
           }
+        });
+        $('#clear').click(() => {
+          socket.emit('clear');
+        });
+        socket.on('cleared', () => {
+          $('#messages').text('');
+          setStatus('Cleared!');
         })
       }
     });
